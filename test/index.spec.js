@@ -1,6 +1,21 @@
+import assert from 'power-assert';
+import sinon from 'sinon';
+import itEach from '$lib';
 
 describe('itEach()', () => {
-  it('uses global `it` automatically');
+  const mochaIt = it;
+  let _it = null;
+
+  beforeEach(() => {
+    _it = sinon.spy();
+    global.it = mochaIt;
+  });
+
+  it('uses global `it` automatically', () => {
+    global.it = _it;
+    itEach('', [0], () => {});
+    assert(_it.calledOnce);
+  });
 
   context('without Mocha', () => {
     it('throws an error when called');
