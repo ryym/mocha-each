@@ -2,6 +2,7 @@ import assert from 'power-assert';
 import sinon from 'sinon';
 import itEach from '$lib';
 
+/** @test {itEach} */
 describe('itEach()', () => {
   const mochaIt = it;
   let _it = null;
