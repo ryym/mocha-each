@@ -1,0 +1,30 @@
+{
+  "name": "mocha-it-each",
+  "version": "0.0.1",
+  "description": "Parametarized test utility for Mocha",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "parameterized",
+    "test",
+    "mocha",
+    "it"
+  ],
+  "files": [
+    "build",
+    "lib"
+  ],
+  "author": "ryym",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.5.1",
+    "babel-plugin-espower": "^2.1.1",
+    "babel-plugin-module-alias": "^1.2.0",
+    "babel-preset-es2015": "^6.5.0",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2"
+  }
+}
