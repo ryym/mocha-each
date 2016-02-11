@@ -7,7 +7,9 @@
     "build": "gulp build",
     "test": "gulp check",
     "dev": "gulp",
-    "coverage": "nyc gulp test"
+    "coverage": "nyc gulp test",
+    "precoveralls": "npm run coverage",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [
     "parameterized",
@@ -27,6 +29,7 @@
     "babel-plugin-espower": "^2.1.1",
     "babel-plugin-module-alias": "^1.2.0",
     "babel-preset-es2015": "^6.5.0",
+    "coveralls": "^2.11.6",
     "del": "^2.2.0",
     "es6-promise": "^3.0.2",
     "eslint": "^1.10.3",
