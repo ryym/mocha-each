@@ -4,6 +4,7 @@ const del    = require('del');
 const glob   = require('glob');
 const Mocha  = require('mocha');
 const eslint = require('eslint');
+const Promise = global.Promise || require('es6-promise').Promise;
 
 const GLOB = {
   lib: './lib/**/*.js',
