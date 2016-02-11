@@ -6,7 +6,8 @@
   "scripts": {
     "build": "gulp build",
     "test": "gulp check",
-    "dev": "gulp"
+    "dev": "gulp",
+    "coverage": "nyc gulp test"
   },
   "keywords": [
     "parameterized",
@@ -33,6 +34,13 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "mocha": "^2.4.5",
+    "nyc": "^5.6.0",
     "power-assert": "^1.2.0"
+  },
+  "nyc": {
+    "exclude": [
+      "gulpfile.babel.js",
+      "test/**/*"
+    ]
   }
 }
