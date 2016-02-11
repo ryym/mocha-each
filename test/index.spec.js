@@ -18,7 +18,12 @@ describe('itEach()', () => {
   });
 
   context('without Mocha', () => {
-    it('throws an error when called');
+    it('throws an error when called', () => {
+      delete global.it;
+      assert.throws(() => {
+        itEach('', [0], () => {});
+      }, /Mocha is not found/);
+    });
   });
 
   context('without test name', () => {
