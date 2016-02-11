@@ -131,6 +131,11 @@ gulp.task('lint:all', [
   'lint:gulp'
 ]);
 
+gulp.task('check', [
+  'lint:all',
+  'test'
+]);
+
 gulp.task('default', [
   'lint:watch',
   'test:watch'
