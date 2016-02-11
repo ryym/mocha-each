@@ -22,12 +22,22 @@ gulp.task('build', ['clean'], () => {
 });
 
 /**
+ * Clear module cache.
+ */
+function clearModuleCache(path) {
+  delete require.cache[path];
+}
+
+/**
  * Run tests in the specified file pattern using Mocha
  */
 function runTests(pattern, options) {
   const mocha = new Mocha(options);
   const files = glob.sync(pattern, { realpath: true });
-  files.forEach(file => mocha.addFile(file));
+  files.forEach(file => {
+    clearModuleCache(file);  // For watching
+    mocha.addFile(file);
+  });
   return new Promise((resolve, reject) => {
     try {
       mocha.run(resolve);
@@ -35,6 +45,16 @@ function runTests(pattern, options) {
       reject(e);
     }
   });
+}
+
+/**
+ * Run a given task. And re-run it whenever the specified files change.
+ */
+function runAndWatch(watchPattern, initialValue, task) {
+  gulp.watch(watchPattern, event => {
+    task(event.path, event);
+  });
+  return task(initialValue);
 }
 
 gulp.task('test:prepare', () => {
@@ -45,6 +65,19 @@ gulp.task('test', ['test:prepare'], () => {
   return runTests(GLOB.spec)
     .then(exitCode => process.exit(exitCode))
     .catch(e => { throw e; });
+});
+
+gulp.task('test:watch', ['test:prepare'], () => {
+  function test() {
+    runTests(GLOB.spec, { reporter: 'dot' })
+      .catch(e => console.log(e.stack));
+  }
+  const sourceFiles = glob.sync(GLOB.lib, { realpath: true });
+  gulp.watch(GLOB.lib, () => {
+    sourceFiles.forEach(f => clearModuleCache(f));
+    test();
+  });
+  runAndWatch(GLOB.spec, null, () => test());
 });
 
 /**
@@ -75,6 +108,17 @@ gulp.task('lint:gulp', () => {
       'no-console': 0
     }
   });
+});
+
+gulp.task('lint:watch', () => {
+  const linter = new eslint.CLIEngine();
+  function lintAndReport(path) {
+    const report = linter.executeOnFiles([path]);
+    const formatter = linter.getFormatter();
+    console.log(formatter(report.results));
+  }
+  runAndWatch(GLOB.lib, GLOB.lib, lintAndReport);
+  runAndWatch(GLOB.spec, GLOB.spec, lintAndReport);
 });
 
 gulp.task('lint', [
