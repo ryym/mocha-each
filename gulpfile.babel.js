@@ -4,6 +4,8 @@ import del from 'del';
 import glob from 'glob';
 import Mocha from 'mocha';
 import eslint from 'eslint';
+import ESDoc  from 'esdoc/out/src/ESDoc';
+import ESDocPublisher from 'esdoc/out/src/Publisher/publish';
 
 const Promise = global.Promise || require('es6-promise').Promise;
 
@@ -142,3 +144,8 @@ gulp.task('default', [
   'lint:watch',
   'test:watch'
 ]);
+
+gulp.task('doc', () => {
+  const config = require('./esdoc.json');
+  ESDoc.generate(config, ESDocPublisher);
+});
