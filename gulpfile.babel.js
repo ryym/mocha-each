@@ -1,9 +1,10 @@
-const gulp   = require('gulp');
-const babel  = require('gulp-babel');
-const del    = require('del');
-const glob   = require('glob');
-const Mocha  = require('mocha');
-const eslint = require('eslint');
+import gulp from 'gulp';
+import babel from 'gulp-babel';
+import del from 'del';
+import glob from 'glob';
+import Mocha from 'mocha';
+import eslint from 'eslint';
+
 const Promise = global.Promise || require('es6-promise').Promise;
 
 const GLOB = {
