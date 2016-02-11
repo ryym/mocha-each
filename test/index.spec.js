@@ -17,6 +17,11 @@ describe('itEach()', () => {
     assert(_it.calledOnce);
   });
 
+  it('accepts fourth argument which specify `it` explicitly', () => {
+    itEach('', [0], () => {}, _it);
+    assert(_it.calledOnce);
+  });
+
   context('without Mocha', () => {
     it('throws an error when called', () => {
       delete global.it;
@@ -53,10 +58,6 @@ describe('itEach()', () => {
   });
 
   context('with asynchronous test', () => {
-    it('TODO');
-  });
-
-  describe('.using()', () => {
     it('TODO');
   });
 
