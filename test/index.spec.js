@@ -1,6 +1,6 @@
 import assert from 'power-assert';
 import sinon from 'sinon';
-import itEach from '$lib';
+import itEach from '../lib';
 
 /** @test {itEach} */
 describe('itEach()', () => {

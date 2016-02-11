@@ -3,10 +3,7 @@
     "es2015"
   ],
   "plugins": [
-    "espower",
-    ["module-alias", [
-      { "src": "./lib", "expose": "$lib" }
-    ]]
+    "espower"
   ],
   "ignore": "./build/*.js"
 }
