@@ -6,7 +6,18 @@ This module provides a way to write simple parameterized tests in [Mocha].
 
 [Mocha]: https://mochajs.org/
 
+## Installation
+
+```
+npm install --save-dev mocha-it-each
+```
+
 ## Usage
+
+### Basic
+
+`itEach` defines the same number of `it` blocks as the parameters length.
+This means all the parameters are tested even if one or more tests fail during the test.
 
 ```javascript
 const assert = require('assert');
@@ -40,13 +51,36 @@ describe('add function', () => {
 
 TODO: Image of result output
 
-`itEach` defines the same number of `it` blocks as the parameters length.
-This means all the parameters are tested even if one or more tests fail during the test.
+### Asynchronous code
 
-## Installation
+When testing asynchronous code, please add a callback (usually named `done`) to
+the arguments of the test function. The callback is same as the one which `it` gives.
+See [Mocha - asynchronous code] for the detail.
 
+[Mocha - asynchronous code]: https://mochajs.org/#asynchronous-code
+
+```javascript
+itEach('do async operation', [
+  [0, 1],
+  [2, 3]
+], (arg, expected, done) => {
+  callAsync(arg).then(actual => {
+    assert.equal(actual, expected);
+    done();
+  });
+});
 ```
-npm install --save-dev mocha-it-each
+
+### Exclusive or inclusive tests
+
+You can call [.only()] and [.skip()] in the same way as `it`.
+
+[.only()]: http://mochajs.org/#exclusive-tests
+[.skip()]: http://mochajs.org/#inclusive-tests
+
+```javascript
+itEach.only('works fine', ...);
+itEach.skip('do something', ...);
 ```
 
 ## API
@@ -74,38 +108,6 @@ So the function will be called like following:
 
 ```javascript
 testBody.apply(mochaInstance, parameter);
-```
-
-### Asynchronous code
-
-When testing asynchronous code, please add a callback (usually named `done`) to
-the arguments of `testBody` function. The callback is same as the one which `it` gives.
-See [Mocha - asynchronous code] for the detail.
-
-[Mocha - asynchronous code]: https://mochajs.org/#asynchronous-code
-
-```javascript
-itEach('do async operation', [
-  [0, 1],
-  [2, 3]
-], (arg, expected, done) => {
-  callAsync(arg).then(actual => {
-    assert.equal(actual, expected);
-    done();
-  });
-});
-```
-
-### Exclusive or inclusive tests
-
-You can call [.only()] and [.skip()] in the same way as `it`.
-
-[.only()]: http://mochajs.org/#exclusive-tests
-[.skip()]: http://mochajs.org/#inclusive-tests
-
-```javascript
-itEach.only('works fine', ...);
-itEach.skip('do something', ...);
 ```
 
 ## License
