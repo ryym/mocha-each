@@ -32,15 +32,37 @@ describe('itEach()', () => {
   });
 
   context('without test name', () => {
-    it('defines tests using a default test name');
+    it('defines tests using a default test name', () => {
+      const params = ['foo', 'bar', 'baz'];
+      itEach(params, () => {}, _it);
+      assert.deepEqual(
+         _it.args.map(a => a[0]),
+        params.map(p => `handles ${JSON.stringify(p)}`)
+      );
+    });
   });
 
   context('with string test name', () => {
-    it('defines tests by the specified name and each parameter');
+    it('defines test names using the specified name and each parameter', () => {
+      const params = [0, 1, 2, 3];
+      itEach('test name', params, () => {}, _it);
+      assert.deepEqual(
+        _it.args.map(a => a[0]),
+        params.map(p => `test name ${JSON.stringify(p)}`)
+      );
+    });
   });
 
   context('with function test name', () => {
-    it('calls the function and defines tests using its return value');
+    it('calls the function and defines tests using its return value', () => {
+      const params = [4, 8, 12, 16];
+      const makeTitle = p => `generated ${p / 2}`;
+      itEach(makeTitle, params, () => {}, _it);
+      assert.deepEqual(
+        _it.args.map(a => a[0]),
+        params.map(makeTitle)
+      );
+    });
   });
 
   context('with empty parameters', () => {
