@@ -76,9 +76,25 @@ So the function will be called like following:
 testBody.apply(mochaInstance, parameter);
 ```
 
-### Test with asynchronous code
+### Asynchronous code
 
-TODO
+When testing asynchronous code, please add a callback (usually named `done`) to
+the arguments of `testBody` function. The callback is same as the one which `it` gives.
+See [Mocha - asynchronous code] for the detail.
+
+[Mocha - asynchronous code]: https://mochajs.org/#asynchronous-code
+
+```javascript
+itEach('do async operation', [
+  [0, 1],
+  [2, 3]
+], (arg, expected, done) => {
+  callAsync(arg).then(actual => {
+    assert.equal(actual, expected);
+    done();
+  });
+});
+```
 
 ### Exclusive or inclusive tests
 
