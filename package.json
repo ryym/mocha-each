@@ -20,10 +20,12 @@
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.5.1",
+    "babel-eslint": "^4.1.8",
     "babel-plugin-espower": "^2.1.1",
     "babel-plugin-module-alias": "^1.2.0",
     "babel-preset-es2015": "^6.5.0",
     "del": "^2.2.0",
+    "eslint": "^1.10.3",
     "glob": "^6.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
