@@ -1,7 +1,7 @@
 {
   "name": "mocha-it-each",
   "version": "0.0.1",
-  "description": "Parametarized test utility for Mocha",
+  "description": "Parameterized test utility for Mocha",
   "main": "build/index.js",
   "scripts": {
     "build": "gulp build",
