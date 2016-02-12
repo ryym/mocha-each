@@ -122,8 +122,51 @@ describe('itEach()', () => {
     });
   });
 
-  context('with asynchronous test', () => {
-    it('TODO');
+  context('for asynchronous test', () => {
+    context('when the testBody takes an additional argument', () => {
+      it('gives a `done` callback used for asynchronous code', () => {
+        let args;
+        const resolve = () => {};
+        itEach('', [[1, 2]],
+          (one, two, done) => args = [one, two, done],
+          (name, body) => body(resolve)
+        );
+        assert.deepEqual(args, [1, 2, resolve]);
+      });
+    });
+
+    context('when the lengths of parameters are different', () => {
+      context('if any param is many more than the arguments', () => {
+        it('gives a `done` callback', () => {
+          let args = [];
+          const resolve = () => {};
+          itEach('', [[1, 2], [3, 4, 5], [6]],
+           (a, b, c, done) => args.push([a, b, c, done]),
+           (name, body) => body(resolve)
+          );
+          assert.deepEqual(args, [
+            [1, 2, resolve, undefined],
+            [3, 4, 5, resolve],
+            [6, resolve, undefined, undefined]
+          ]);
+        });
+      });
+
+      context('otherwise', () => {
+        it('does not give a `done` callback', () => {
+          let args = [];
+          itEach('', [[1, 2], [3, 4, 5, 6], [7]],
+           (a, b, c, d) => args.push([a, b, c, d]),
+           (name, body) => body( () => {} )
+          );
+          assert.deepEqual(args, [
+            [1, 2, undefined, undefined],
+            [3, 4, 5, 6],
+            [7, undefined, undefined, undefined]
+          ]);
+        });
+      });
+    });
   });
 
   /** @test {itEach.only} */
