@@ -169,7 +169,20 @@ describe('itEach()', () => {
     });
   });
 
+  /** @test {itEach.skip} */
   describe('.skip()', () => {
-    it('TODO');
+    beforeEach(() => _it.skip = sinon.spy());
+    afterEach(() => delete _it.skip);
+
+    it('defines each test case using `it.skip()` method', () => {
+      const params = [0, 1, 2, 3];
+      const makeTestName = p => `test for ${p}`;
+      itEach.skip(makeTestName, params, () => {}, _it);
+
+      assert.deepEqual(
+        _it.skip.args.map(a => a[0]),
+        params.map(makeTestName)
+      );
+    });
   });
 });
