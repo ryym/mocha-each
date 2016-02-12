@@ -37,6 +37,7 @@
     "es6-promise": "^3.0.2",
     "esdoc": "^0.4.4",
     "eslint": "^1.10.3",
+    "eslint-plugin-markdown": "^1.0.0-beta.1",
     "glob": "^6.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",

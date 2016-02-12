@@ -111,6 +111,13 @@ gulp.task('lint:gulp', () => {
   });
 });
 
+gulp.task('lint:doc', () => {
+  lintFiles('./README.md', true, {
+    plugins: [ 'markdown' ],
+    rules: { 'no-undef': 0 }
+  })
+});
+
 gulp.task('lint:watch', () => {
   const linter = new eslint.CLIEngine();
   function lintAndReport(path) {
@@ -129,7 +136,8 @@ gulp.task('lint', [
 
 gulp.task('lint:all', [
   'lint',
-  'lint:gulp'
+  'lint:gulp',
+  'lint:doc'
 ]);
 
 gulp.task('check', [
