@@ -43,7 +43,8 @@ describe('add function', () => {
       [undefined, undefined],
       [{}, []]
     ], (left, right) => {
-      assert.equal(add(left, right), NaN);
+      const value = add(left, right);
+      assert.equal(isNaN(value));
     });
   });
 });
