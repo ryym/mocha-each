@@ -96,10 +96,15 @@ to define exclusive parameterized tests because we can't call `.only()` multiple
 
 You can define each test name as a string or function. If omitted,
 the following default test name is applied.
-When `testName` is a function, it takes each parameter as arguments.
 
 ```
-  handles JSON.stringify(param)
+  handles case ${index}
+```
+
+When `testName` is a function, it takes each index and parameter like:
+
+```
+  testName(index, p[0], p[1], p[2], ..);
 ```
 
 #### parameters: `Array`

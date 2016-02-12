@@ -34,34 +34,31 @@ describe('itEach()', () => {
 
   context('without test name', () => {
     it('defines tests using a default test name', () => {
-      const params = ['foo', 'bar', 'baz'];
-      itEach(params, () => {}, _it);
+      itEach(['foo', 'bar', 'baz'], () => {}, _it);
       assert.deepEqual(
-         _it.args.map(a => a[0]),
-        params.map(p => `handles ${JSON.stringify(p)}`)
+        _it.args.map(a => a[0]),
+        [1, 2, 3].map(i => `handles case ${i}`)
       );
     });
   });
 
   context('with string test name', () => {
-    it('defines test names using the specified name and each parameter', () => {
-      const params = [0, 1, 2, 3];
-      itEach('test name', params, () => {}, _it);
+    it('defines test names using the specified name and each index', () => {
+      itEach('test name', [0, 1, 2, 3], () => {}, _it);
       assert.deepEqual(
         _it.args.map(a => a[0]),
-        params.map(p => `test name ${JSON.stringify(p)}`)
+        [1, 2, 3, 4].map(i => `test name (case ${i})`)
       );
     });
   });
 
   context('with function test name', () => {
     it('calls the function and defines tests using its return value', () => {
-      const params = [4, 8, 12, 16];
-      const makeTitle = p => `generated ${p / 2}`;
-      itEach(makeTitle, params, () => {}, _it);
+      const makeName = (i, p) => `generated ${p / 2}`;
+      itEach(makeName, [4, 8, 12, 16], () => {}, _it);
       assert.deepEqual(
         _it.args.map(a => a[0]),
-        params.map(makeTitle)
+        [2, 4, 6, 8].map(n => `generated ${n}`)
       );
     });
   });
