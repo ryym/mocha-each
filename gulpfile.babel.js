@@ -107,10 +107,7 @@ gulp.task('lint:test', () => {
 
 gulp.task('lint:gulp', () => {
   lintFiles('./gulpfile.js', true, {
-    rules: {
-      'no-multi-spaces': 0,
-      'no-console': 0
-    }
+    rules: { 'no-console': 0 }
   });
 });
 
