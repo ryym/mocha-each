@@ -77,8 +77,19 @@ itEach('do async operation', [
 You can call [.only()] and [.skip()] in the same way as `it`.
 
 ```javascript
-itEach.only('works fine', ...);
-itEach.skip('do something', ...);
+// Run only these parameterized tests.
+itEach.only('works fine', [
+  0, 1, 2, 3
+], number => {
+  assert(number);
+});
+
+// Ignore these parameterized tests.
+itEach.skip('also works fine', [
+  'foo', 'bar', 'baz'
+], word => {
+  assert(word);
+});
 ```
 
 Note: When you use the `.only()`, `itEach` creates a nameless test suite by [describe()]
