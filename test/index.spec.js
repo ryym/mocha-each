@@ -18,7 +18,7 @@ describe('itEach()', () => {
     assert(_it.calledOnce);
   });
 
-  it('accepts fourth argument which specify `it` explicitly', () => {
+  it('accepts a fourth argument which specifies `it` explicitly', () => {
     itEach('', [0], () => {}, _it);
     assert(_it.calledOnce);
   });
@@ -94,7 +94,7 @@ describe('itEach()', () => {
       assert.deepEqual(test.args, params);
     });
 
-    context('with an array of non-array values', () => {
+    context('which is an array of non-array values', () => {
       it('passes each parameter as a first argument', () => {
         const params = [0, 1, 2, 3];
         const test = sinon.spy();
