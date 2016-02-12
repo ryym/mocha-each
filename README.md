@@ -75,13 +75,18 @@ itEach('do async operation', [
 
 You can call [.only()] and [.skip()] in the same way as `it`.
 
-[.only()]: http://mochajs.org/#exclusive-tests
-[.skip()]: http://mochajs.org/#inclusive-tests
-
 ```javascript
 itEach.only('works fine', ...);
 itEach.skip('do something', ...);
 ```
+
+Note: When you use the `.only()`, `itEach` creates a nameless test suite by [describe()]
+to define exclusive parameterized tests because we can't call `.only()` multiple times
+(see [Mocha docs][.only()]).
+
+[.only()]: http://mochajs.org/#exclusive-tests
+[.skip()]: http://mochajs.org/#inclusive-tests
+[describe()]: https://mochajs.org/#interfaces
 
 ## API
 

@@ -126,8 +126,47 @@ describe('itEach()', () => {
     it('TODO');
   });
 
+  /** @test {itEach.only} */
   describe('.only()', () => {
-    it('TODO');
+    const mochaDescribe = describe;
+    let _describe;
+
+    beforeEach(() => {
+      _describe = sinon.spy();
+      _describe.only = sinon.spy();
+      global.describe = _describe;
+    });
+
+    afterEach(() => {
+      global.describe = mochaDescribe;
+    });
+
+    it('creates a nameless test suite', () => {
+      itEach.only('', [0], () => {}, _it);
+      const testSuiteName = _describe.only.args[0][0];
+      assert.equal(testSuiteName, '');
+    });
+
+    it('creates a test suite using its `.only()` method', () => {
+      const _descOnly = _describe.only;
+      const params = [0, 1, 2, 3];
+      itEach.only('', params, () => {}, _it);
+
+      assert.deepEqual(
+        [_descOnly.callCount, _it.callCount],
+        [1, 0]
+      );
+      assert.deepEqual(
+        _descOnly.args[0].map(a => typeof a),
+        ['string', 'function']
+      );
+
+      const runTestSuite = _descOnly.args[0][1];
+      runTestSuite();
+
+      assert.equal(_it.callCount, params.length);
+      assert.equal(_describe.callCount, 0);
+    });
   });
 
   describe('.skip()', () => {
