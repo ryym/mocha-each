@@ -164,6 +164,22 @@ describe('itEach()', () => {
         });
       });
     });
+
+    context('when the parameters are arrays of non-array values', () => {
+      it('gives a `done` callback correctly', () => {
+        let args = [];
+        const resolve = () => {};
+        itEach('', [0, 1, 2],
+         (n, done) => args.push([n, done]),
+         (name, body) => body(resolve)
+        );
+        assert.deepEqual(args, [
+          [0, resolve],
+          [1, resolve],
+          [2, resolve]
+        ]);
+      });
+    });
   });
 
   /** @test {itEach.only} */
