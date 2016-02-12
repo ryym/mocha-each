@@ -23,6 +23,15 @@ describe('itEach()', () => {
     assert(_it.calledOnce);
   });
 
+  it('binds `this` to the context of `it` (Mocha instance)', () => {
+    const test = sinon.spy();
+    const _this = {};
+    let body;
+    itEach('', [0], test, (name, b) => body = b);
+    body.call(_this);
+    assert.equal(test.thisValues[0], _this);
+  });
+
   context('without Mocha', () => {
     it('throws an error when called', () => {
       delete global.it;
@@ -129,6 +138,20 @@ describe('itEach()', () => {
           (name, body) => body(resolve)
         );
         assert.deepEqual(args, [1, 2, resolve]);
+      });
+
+      it('binds `this` to the context of `it` (Mocha instance)', () => {
+        const expectedThis = {};
+        let actualThis;
+        let body;
+        itEach('', [0],
+          /* eslint-disable no-unused-vars */
+          function (n, done) { actualThis = this; },
+          /* eslint-enable */
+          (name, b) => body = b
+        );
+        body.call(expectedThis);
+        assert.equal(actualThis, expectedThis);
       });
     });
 
