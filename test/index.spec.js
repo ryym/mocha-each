@@ -107,7 +107,19 @@ describe('itEach()', () => {
   });
 
   context('with invalid arguments', () => {
-    it('TODO');
+    context('like wrong numbers of arguments', () => {
+      it('throws an error', () => {
+        [
+          [],
+          [''],
+          ['', [], () => {}, 1, 2]
+        ].forEach(args => {
+          assert.throws(() => {
+            itEach(...args);
+          }, /itEach:/);
+        });
+      });
+    });
   });
 
   context('with asynchronous test', () => {
