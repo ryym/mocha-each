@@ -42,7 +42,7 @@ describe('Example', () => {
   /* Generate test case name dynamically */
   describe('letCry()', () => {
     itEach(
-      (i, animal, cry) => `A ${animal} should cry '${cry}'`,
+      (animal, cry) => `A ${animal} should cry '${cry}'`,
       [
         ['dog', 'bowow'],
         ['cat', 'meow'],

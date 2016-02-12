@@ -113,10 +113,10 @@ the following default test name is applied.
   handles case ${index}
 ```
 
-When `testName` is a function, it takes each index and parameter like:
+When `testName` is a function, it takes each parameter and index like:
 
 ```
-  testName(index, p[0], p[1], p[2], ..);
+  testName(p[0], p[1], .., p[n - 1], index);
 ```
 
 #### parameters: `Array`

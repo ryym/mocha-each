@@ -53,7 +53,7 @@ describe('itEach()', () => {
 
   context('with string test name', () => {
     it('defines test names using the specified name and each index', () => {
-      itEach('test name', [0, 1, 2, 3], () => {}, _it);
+      itEach('test name', [3, 2, 1, 0], () => {}, _it);
       assert.deepEqual(
         _it.args.map(a => a[0]),
         [1, 2, 3, 4].map(i => `test name (case ${i})`)
@@ -63,7 +63,7 @@ describe('itEach()', () => {
 
   context('with function test name', () => {
     it('calls the function and defines tests using its return value', () => {
-      const makeName = (i, p) => `generated ${p / 2}`;
+      const makeName = p => `generated ${p / 2}`;
       itEach(makeName, [4, 8, 12, 16], () => {}, _it);
       assert.deepEqual(
         _it.args.map(a => a[0]),
