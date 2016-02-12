@@ -28,7 +28,7 @@ describe('itEach()', () => {
       delete global.it;
       assert.throws(() => {
         itEach('', [0], () => {});
-      }, /Mocha is not found/);
+      }, /is not a function/);
     });
   });
 
