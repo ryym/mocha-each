@@ -14,7 +14,7 @@ describe('Example', () => {
       [2, -2, 0],
       [140, 48, 188]
     ])
-    .it('adds two numbers', (left, right, expected) => {
+    .it('adds %d and %d then returns %d', (left, right, expected) => {
       assert.equal(add(left, right), expected);
     });
 
@@ -22,10 +22,9 @@ describe('Example', () => {
       forEach([
         [1, 'foo'],
         [null, 10],
-        [undefined, undefined],
         [{}, []]
       ])
-      .it('returns NaN value', (left, right) => {
+      .it('adds %j and %j then returns NaN', (left, right) => {
         const value = add(left, right);
         assert(isNaN(value));
       });
@@ -44,15 +43,15 @@ describe('Example', () => {
   /* Generate test case name dynamically */
   describe('letCry()', () => {
     forEach([
-      ['dog', 'bowow'],
-      ['cat', 'meow'],
-      ['cow', 'mow'],
-      ['nothing', '...']
+      ['dog', { cry: 'bowow' }],
+      ['cat', { cry: 'meow' }],
+      ['cow', { cry: 'mow' }],
+      ['nothing', { cry: '...' }]
     ])
     .it(
-      (animal, cry) => `A ${animal} should cry '${cry}'`,
-      (animal, cry) => {
-        assert.equal(cry, letCry(animal));
+      (animal, data) => `A ${animal} should cry '${data.cry}'`,
+      (animal, data) => {
+        assert.equal(data.cry, letCry(animal));
       }
     );
   });
@@ -61,7 +60,7 @@ describe('Example', () => {
     return Boolean(value);
   }
 
-  /* Omit test case name */
+  /* Use single value parameters */
   describe('asBool()', () => {
     forEach([
       'string',
@@ -69,7 +68,7 @@ describe('Example', () => {
       true,
       {}
     ])
-    .it(value => `handles ${JSON.stringify(value)}`, value => {
+    .it('handles %j', value => {
       assert.equal(asBool(value), true);
     });
   });

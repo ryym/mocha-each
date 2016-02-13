@@ -34,7 +34,7 @@ describe('add function', () => {
     [[2, -2], 0],
     [[140, 48], 188]
   ])
-  .it('adds two numbers', (left, right, expected) => {
+  .it('adds %d and %d then returns %d', (left, right, expected) => {
     assert.equal(add(left, right), expected);
   });
 
@@ -42,10 +42,9 @@ describe('add function', () => {
     forEach([
       [1, 'foo'],
       [null, 10],
-      [undefined, undefined],
       [{}, []]
     ])
-    .it('returns NaN value', (left, right) => {
+    .it('adds %j and %j then returns NaN', (left, right) => {
       const value = add(left, right);
       assert.equal(isNaN(value));
     });
@@ -117,6 +116,34 @@ An array of parameters. Each parameter will be applied to `testCase` as its argu
 #### title: `String` or `Function`
 
 A title of the test case. You can define each title as a string or function.
+
+##### String title
+
+When it is a string, you can use placeholders which will be replaced by the parameters.
+mocha-each uses [sprintf-js] to replace placeholders.
+
+[sprintf-js]: https://github.com/alexei/sprintf.js
+
+example:
+
+```javascript
+forEach([
+  ['Good morning', 9],
+  ['Hello', 12],
+  ['Godd evening', 21]
+])
+.it('greets "%s" at %d:00', (expected, time) => {
+  const greet = greeter.at(time).greet();
+  assert.equal(greet, expected);
+});
+// =>
+// greets "Good morning" at 9:00
+// greets "Hello" at 12:00
+// greets "Good evening" at 21:00
+```
+
+##### Function title
+
 When it is a function, it takes each parameter and index as its arguments like:
 
 ```
