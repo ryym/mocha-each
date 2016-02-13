@@ -4,5 +4,6 @@
   "test": {
     "type": "mocha",
     "source": "./test"
-  }
+  },
+  "unexportIdentifier": true
 }
