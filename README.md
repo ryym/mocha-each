@@ -181,6 +181,12 @@ forEach([
 });
 ```
 
+## Supported interfaces
+
+Though Mocha provides [several interfaces], currently only the BDD interface is supported.
+
+[several interfaces]: https://mochajs.org/#interfaces
+
 ## Tips
 
 You can define the name of mocha-each function as you like when requiring it.
