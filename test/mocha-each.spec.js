@@ -126,13 +126,60 @@ describe('mocha-each', () => {
   });
 
   describe('.it.only()', () => {
-    it('creates a nameless test suite');
+    const mochaDescribe = describe;
+    let _describe;
 
-    it('creates a test suite using its `.only()` method');
+    beforeEach(() => {
+      _describe = sinon.spy();
+      _describe.only = sinon.spy();
+      global.describe = _describe;
+    });
+
+    afterEach(() => {
+      global.describe = mochaDescribe;
+    });
+
+    it('creates a nameless test suite', () => {
+      forEach([0], _it).it.only('', () => {});
+      const suiteTitle = _describe.only.args[0][0];
+      assert.equal(suiteTitle, '');
+    });
+
+    it('creates a test suite using its `.only()` method', () => {
+      const _descOnly = _describe.only;
+      const params = [0, 1, 2, 3];
+      forEach(params, _it).it.only('', () => {});
+
+      assert.deepEqual(
+        [_descOnly.callCount, _it.callCount],
+        [1, 0]
+      );
+      assert.deepEqual(
+        _descOnly.args[0].map(a => typeof a),
+        ['string', 'function']
+      );
+
+      const runTestSuite = _descOnly.args[0][1];
+      runTestSuite();
+
+      assert.equal(_it.callCount, params.length);
+      assert.equal(_describe.callCount, 0);
+    });
   });
 
   describe('.it.skip()', () => {
-    it('defines each test case using Mocha\'s `it.skip()` method');
+    beforeEach(() => _it.skip = sinon.spy());
+    afterEach(() => delete _it.skip);
+
+    it('defines each test case using Mocha\'s `it.skip()` method', () => {
+      const params = [3, 2, 1, 0];
+      const makeTitle = p => `test for ${p}`;
+      forEach(params, _it).it.skip(makeTitle, () => {});
+      assert.deepEqual(
+        _it.skip.args.map(a => a[0]),
+        params.map(makeTitle)
+      );
+    });
   });
 });
 
