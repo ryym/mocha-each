@@ -23,7 +23,15 @@ describe('mocha-each', () => {
     assert(_it.calledOnce);
   });
 
-  it('binds `this` to the context of `it` (Mocha instance)');
+  it('binds `this` to the context of `it` (Mocha instance)', () => {
+    const test = sinon.spy();
+    const _this = {};
+    const _it = (name, b) => body = b;
+    let body;
+    forEach([0], _it).it('', test);
+    body.call(_this);
+    assert.equal(test.thisValues[0], _this);
+  });
 
   context('without Mocha', () => {
     it('throws an error when called', () => {
