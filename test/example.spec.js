@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import itEach from '../lib';
+import forEach from '../lib/mocha-each';
 
 /* Sample code using 'itEach' */
 describe('Example', () => {
@@ -9,21 +9,23 @@ describe('Example', () => {
 
   /* Basic use */
   describe('add()', () => {
-    itEach('adds two numbers', [
-      [[1, 1], 2],
-      [[2, -2], 0],
-      [[140, 48], 188]
-    ], (args, expected) => {
-      assert.equal(add.apply(null, args), expected);
+    forEach([
+      [1, 1, 2],
+      [2, -2, 0],
+      [140, 48, 188]
+    ])
+    .it('adds two numbers', (left, right, expected) => {
+      assert.equal(add(left, right), expected);
     });
 
     context('with invalid arguments', () => {
-      itEach('returns NaN value', [
+      forEach([
         [1, 'foo'],
         [null, 10],
         [undefined, undefined],
         [{}, []]
-      ], (left, right) => {
+      ])
+      .it('returns NaN value', (left, right) => {
         const value = add(left, right);
         assert(isNaN(value));
       });
@@ -41,14 +43,15 @@ describe('Example', () => {
 
   /* Generate test case name dynamically */
   describe('letCry()', () => {
-    itEach(
+    forEach([
+      ['dog', 'bowow'],
+      ['cat', 'meow'],
+      ['cow', 'mow'],
+      ['nothing', '...']
+    ])
+    .it(
       (animal, cry) => `A ${animal} should cry '${cry}'`,
-      [
-        ['dog', 'bowow'],
-        ['cat', 'meow'],
-        ['cow', 'mow'],
-        ['nothing', '...']
-      ], (animal, cry) => {
+      (animal, cry) => {
         assert.equal(cry, letCry(animal));
       }
     );
@@ -60,12 +63,13 @@ describe('Example', () => {
 
   /* Omit test case name */
   describe('asBool()', () => {
-    itEach([
+    forEach([
       'string',
       100,
       true,
       {}
-    ], value => {
+    ])
+    .it(value => `handles ${JSON.stringify(value)}`, value => {
       assert.equal(asBool(value), true);
     });
   });
@@ -78,9 +82,10 @@ describe('Example', () => {
 
   /* With asynchronous code */
   describe('delayGreet()', () => {
-    itEach('greets will be delayed', [
+    forEach([
       'Alis', 'Bob', 'Caroline'
-    ], (name, done) => {
+    ])
+    .it('greets will be delayed', (name, done) => {
       delayGreet(name, greet => {
         assert.equal(greet, `Hi, ${name}!`);
         done();
