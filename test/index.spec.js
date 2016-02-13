@@ -38,7 +38,7 @@ describe('mocha-each', () => {
       delete global.it;
       assert.throws(() => {
         forEach([0]).it('', () => {});
-      }, /it is not a function/);
+      }, /is not a function/);
     });
   });
 
