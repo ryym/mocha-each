@@ -1,10 +1,15 @@
 {
   "name": "mocha-it-each",
   "version": "0.0.1",
-  "description": "Parametarized test utility for Mocha",
+  "description": "Parameterized test utility for Mocha",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build",
+    "test": "gulp check",
+    "dev": "gulp",
+    "coverage": "nyc gulp test",
+    "precoveralls": "npm run coverage",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [
     "parameterized",
@@ -18,18 +23,33 @@
   ],
   "author": "ryym",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ryym/mocha-it-each.git"
+  },
   "devDependencies": {
     "babel-core": "^6.5.1",
     "babel-eslint": "^4.1.8",
     "babel-plugin-espower": "^2.1.1",
-    "babel-plugin-module-alias": "^1.2.0",
     "babel-preset-es2015": "^6.5.0",
+    "coveralls": "^2.11.6",
     "del": "^2.2.0",
+    "es6-promise": "^3.0.2",
+    "esdoc": "^0.4.4",
     "eslint": "^1.10.3",
+    "eslint-plugin-markdown": "^1.0.0-beta.1",
     "glob": "^6.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "mocha": "^2.4.5",
-    "power-assert": "^1.2.0"
+    "nyc": "^5.6.0",
+    "power-assert": "^1.2.0",
+    "sinon": "^1.17.3"
+  },
+  "nyc": {
+    "exclude": [
+      "gulpfile.babel.js",
+      "test/**/*"
+    ]
   }
 }

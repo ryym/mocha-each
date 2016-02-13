@@ -1,9 +1,13 @@
-const gulp   = require('gulp');
-const babel  = require('gulp-babel');
-const del    = require('del');
-const glob   = require('glob');
-const Mocha  = require('mocha');
-const eslint = require('eslint');
+import gulp from 'gulp';
+import babel from 'gulp-babel';
+import del from 'del';
+import glob from 'glob';
+import Mocha from 'mocha';
+import eslint from 'eslint';
+import ESDoc  from 'esdoc/out/src/ESDoc';
+import ESDocPublisher from 'esdoc/out/src/Publisher/publish';
+
+const Promise = global.Promise || require('es6-promise').Promise;
 
 const GLOB = {
   lib: './lib/**/*.js',
@@ -103,11 +107,15 @@ gulp.task('lint:test', () => {
 
 gulp.task('lint:gulp', () => {
   lintFiles('./gulpfile.js', true, {
-    rules: {
-      'no-multi-spaces': 0,
-      'no-console': 0
-    }
+    rules: { 'no-console': 0 }
   });
+});
+
+gulp.task('lint:doc', () => {
+  lintFiles('./README.md', true, {
+    plugins: [ 'markdown' ],
+    rules: { 'no-undef': 0 }
+  })
 });
 
 gulp.task('lint:watch', () => {
@@ -128,7 +136,8 @@ gulp.task('lint', [
 
 gulp.task('lint:all', [
   'lint',
-  'lint:gulp'
+  'lint:gulp',
+  'lint:doc'
 ]);
 
 gulp.task('check', [
@@ -140,3 +149,8 @@ gulp.task('default', [
   'lint:watch',
   'test:watch'
 ]);
+
+gulp.task('doc', () => {
+  const config = require('./esdoc.json');
+  ESDoc.generate(config, ESDocPublisher);
+});

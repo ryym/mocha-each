@@ -43,7 +43,8 @@ describe('add function', () => {
       [undefined, undefined],
       [{}, []]
     ], (left, right) => {
-      assert.equal(add(left, right), NaN);
+      const value = add(left, right);
+      assert.equal(isNaN(value));
     });
   });
 });
@@ -75,13 +76,29 @@ itEach('do async operation', [
 
 You can call [.only()] and [.skip()] in the same way as `it`.
 
+```javascript
+// Run only these parameterized tests.
+itEach.only('works fine', [
+  0, 1, 2, 3
+], number => {
+  assert(number);
+});
+
+// Ignore these parameterized tests.
+itEach.skip('also works fine', [
+  'foo', 'bar', 'baz'
+], word => {
+  assert(word);
+});
+```
+
+Note: When you use the `.only()`, `itEach` creates a nameless test suite by [describe()]
+to define exclusive parameterized tests because we can't call `.only()` multiple times
+(see [Mocha docs][.only()]).
+
 [.only()]: http://mochajs.org/#exclusive-tests
 [.skip()]: http://mochajs.org/#inclusive-tests
-
-```javascript
-itEach.only('works fine', ...);
-itEach.skip('do something', ...);
-```
+[describe()]: https://mochajs.org/#interfaces
 
 ## API
 
@@ -91,10 +108,15 @@ itEach.skip('do something', ...);
 
 You can define each test name as a string or function. If omitted,
 the following default test name is applied.
-When `testName` is a function, it takes each parameter as arguments.
 
 ```
-  handles JSON.stringify(param)
+  handles case ${index}
+```
+
+When `testName` is a function, it takes each parameter and index like:
+
+```
+  testName(p[0], p[1], .., p[n - 1], index);
 ```
 
 #### parameters: `Array`
