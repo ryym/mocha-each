@@ -47,7 +47,7 @@ describe('mocha-each', () => {
       forEach([3, 2, 1, 0], _it).it('title', () => {});
       assert.deepEqual(
         _it.args.map(a => a[0]),
-        [1, 2, 3, 4].map(i => `title (case ${i})`)
+        ['title', 'title', 'title', 'title']
       );
     });
   });
