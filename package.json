@@ -27,6 +27,9 @@
     "type": "git",
     "url": "git://github.com/ryym/mocha-each.git"
   },
+  "dependencies": {
+    "sprintf-js": "^1.0.3"
+  },
   "devDependencies": {
     "babel-core": "^6.5.1",
     "babel-eslint": "^4.1.8",
@@ -44,8 +47,7 @@
     "mocha": "^2.4.5",
     "nyc": "^5.6.0",
     "power-assert": "^1.2.0",
-    "sinon": "^1.17.3",
-    "sprintf-js": "^1.0.3"
+    "sinon": "^1.17.3"
   },
   "nyc": {
     "exclude": [
