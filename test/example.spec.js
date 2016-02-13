@@ -1,5 +1,5 @@
 import assert from 'power-assert';
-import forEach from '../lib/mocha-each';
+import forEach from '../lib';
 
 /* Sample code using 'itEach' */
 describe('Example', () => {

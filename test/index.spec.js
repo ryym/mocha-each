@@ -1,6 +1,6 @@
 import assert from 'power-assert';
 import sinon from 'sinon';
-import forEach from '../lib/mocha-each';
+import forEach from '../lib';
 
 /** @test {forEach} */
 describe('mocha-each', () => {
