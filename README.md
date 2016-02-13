@@ -2,6 +2,16 @@
 
 # Mocha Each - Parameterized Test for Mocha
 
+[![Build Status](https://travis-ci.org/ryym/mocha-each.svg?branch=master)][travis-ci]
+[![Coverage Status](https://coveralls.io/repos/github/ryym/mocha-each/badge.svg?branch=master)][coveralls]
+[![Dependency Status](https://david-dm.org/ryym/mocha-each.svg)][david]
+[![devDependency Status](https://david-dm.org/ryym/mocha-each/dev-status.svg)][david-dev]
+
+[travis-ci]: https://travis-ci.org/ryym/mocha-each
+[coveralls]: https://coveralls.io/github/ryym/mocha-each?branch=master
+[david]: https://david-dm.org/ryym/mocha-each
+[david-dev]: https://david-dm.org/ryym/mocha-each#info=devDependencies
+
 This module provides a way to write simple parameterized tests in [Mocha].
 
 [Mocha]: https://mochajs.org/
