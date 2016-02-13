@@ -113,23 +113,91 @@ describe('mocha-each', () => {
 
   context('for asynchronous test', () => {
     context('when the test function takes an additional argument', () => {
-      it('gives a `done` callback used for asynchronous code');
+      it('gives a `done` callback used for asynchronous code', () => {
+        let args;
+        const resolve = () => {};
+        forEach(
+          [[1, 2]],
+          (name, body) => body(resolve)
+        )
+        .it('', (one, two, done) => {
+          args = [one, two, done];
+        });
+        assert.deepEqual(args, [1, 2, resolve]);
+      });
 
-      it('binds `this` to the context of `it` (Mocha instance)');
+      it('binds `this` to the context of `it` (Mocha instance)', () => {
+        const expectedThis = {};
+        let actualThis;
+        let body;
+        forEach(
+          [0],
+          (name, b) => body = b
+        ).it('', function(n, done) {
+          actualThis = this;
+          done();
+        });
+        body.call(expectedThis, () => {});
+        assert.equal(actualThis, expectedThis);
+      });
     });
 
     context('when the lengths of parameters are different', () => {
       context('if any param is many more than the arguments', () => {
-        it('gives a `done` callback');
+        it('gives a `done` callback', () => {
+          let args = [];
+          const resolve = () => {};
+          forEach(
+            [ [1, 2], [3, 4, 5], [6] ],
+            (name, body) => body(resolve)
+          )
+          .it('', (a, b, c, done) => {
+            args.push([a, b, c, done]);
+          });
+          assert.deepEqual(args, [
+            [1, 2, resolve, undefined],
+            [3, 4, 5, resolve],
+            [6, resolve, undefined, undefined]
+          ]);
+        });
       });
 
       context('otherwise', () => {
-        it('does not give a `done` callback');
+        it('does not give a `done` callback', () => {
+          let args = [];
+          forEach(
+            [ [1, 2], [3, 4, 5, 6], [7] ],
+            (name, body) => body(() => {})
+          )
+          .it('', (a, b, c, d) => {
+            args.push([a, b, c, d]);
+          });
+          assert.deepEqual(args, [
+            [1, 2, undefined, undefined],
+            [3, 4, 5, 6],
+            [7, undefined, undefined, undefined]
+          ]);
+        });
       });
     });
 
     context('when the parameters are arrays of non-array values', () => {
-      it('gives a `done` callback');
+      it('gives a `done` callback', () => {
+        let args = [];
+        const resolve = () => {};
+        forEach(
+          [0, 1, 2],
+          (name, body) => body(resolve)
+        )
+        .it('', (n, done) => {
+          args.push([n, done]);
+        });
+        assert.deepEqual(args, [
+          [0, resolve],
+          [1, resolve],
+          [2, resolve]
+        ]);
+      });
     });
   });
 
