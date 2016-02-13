@@ -47,8 +47,24 @@ describe('mocha-each', () => {
       forEach([3, 2, 1, 0], _it).it('title', () => {});
       assert.deepEqual(
         _it.args.map(a => a[0]),
-        [1, 2, 3, 4].map(i => `title (case ${i})`)
+        ['title', 'title', 'title', 'title']
       );
+    });
+
+    it('formats a given string using `sprintf`', () => {
+      const titles = [];
+      forEach(
+        [
+          [0, 'foo', { a: 1.2, b: [3, 2, 1] }],
+          [1, 'bar', { c: 0.1, d: [4, 5, 6] }]
+        ],
+        title => titles.push(title)
+      )
+      .it('handles [%d, %s, %j]', () => {});
+      assert.deepEqual(titles, [
+        'handles [0, foo, {"a":1.2,"b":[3,2,1]}]',
+        'handles [1, bar, {"c":0.1,"d":[4,5,6]}]'
+      ]);
     });
   });
 
