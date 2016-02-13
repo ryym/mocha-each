@@ -1,5 +1,5 @@
 {
-  "name": "mocha-it-each",
+  "name": "mocha-each",
   "version": "0.0.1",
   "description": "Parameterized test utility for Mocha",
   "main": "build/index.js",
@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ryym/mocha-it-each.git"
+    "url": "git://github.com/ryym/mocha-each.git"
   },
   "devDependencies": {
     "babel-core": "^6.5.1",
