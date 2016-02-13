@@ -15,7 +15,7 @@
     "parameterized",
     "test",
     "mocha",
-    "it"
+    "each"
   ],
   "files": [
     "build",
