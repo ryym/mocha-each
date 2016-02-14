@@ -2,3 +2,4 @@ node_modules/
 /build/
 .nyc_output/
 esdoc/
+npm-debug.log
