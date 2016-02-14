@@ -1,6 +1,6 @@
 # :construction: WIP :construction:
 
-# Mocha Each - Parameterized Test for Mocha
+# Mocha-Each - Parameterized Test for Mocha
 
 [![Build Status](https://travis-ci.org/ryym/mocha-each.svg?branch=master)][travis-ci]
 [![Coverage Status](https://coveralls.io/repos/github/ryym/mocha-each/badge.svg?branch=master)][coveralls]
@@ -26,9 +26,9 @@ npm install --save-dev mocha-each
 
 ### Basic
 
-The function mocha-each provides takes parameters as an array. And then you can define
-test cases for each parameter. All the test cases you defined are executed even if
-one or more cases fail during the test.
+The function mocha-each provides takes parameters as an array and returns a
+parameterized test function. You can define test cases for each parameter by the function.
+All the test cases you defined are executed even if one or more cases fail during the test.
 
 ```javascript
 // test.js
@@ -165,11 +165,20 @@ When it is a function, it takes each parameter and index as its arguments like:
 
 #### testCase: `Function`
 
-A test function which will be called for each parameter.
-So the function will be called like following:
+A test function which will be called for each parameter. The context of the function
+is same as Mocha's `it` so that you can use configuration methods like [timeout].
+
+[timeout]: https://mochajs.org/#timeouts
 
 ```javascript
-testCase.apply(mochaInstance, parameter);
+forEach([
+  //...
+])
+.it('is a slow test', function(p0, p1, p2 /*, done */) {
+  this.timeout(3000);  // Configure timeout.
+  use(p0, p1, p2);
+  //...
+});
 ```
 
 ## Tips
