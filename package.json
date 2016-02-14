@@ -1,6 +1,6 @@
 {
   "name": "mocha-each",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Parameterized test utility for Mocha",
   "main": "build/index.js",
   "scripts": {
