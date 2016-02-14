@@ -1,9 +1,9 @@
 import assert from 'power-assert';
 import sinon from 'sinon';
-import itEach from '../lib';
+import forEach from '../lib';
 
-/** @test {itEach} */
-describe('itEach()', () => {
+/** @test {forEach} */
+describe('mocha-each', () => {
   const mochaIt = it;
   let _it = null;
 
@@ -14,20 +14,21 @@ describe('itEach()', () => {
 
   it('uses global `it` automatically', () => {
     global.it = _it;
-    itEach('', [0], () => {});
+    forEach([0]).it('', () => {});
     assert(_it.calledOnce);
   });
 
-  it('accepts a fourth argument which specifies `it` explicitly', () => {
-    itEach('', [0], () => {}, _it);
+  it('accepts a second argument which specifies `it` explicitly', () => {
+    forEach([0], _it).it('', () => {});
     assert(_it.calledOnce);
   });
 
   it('binds `this` to the context of `it` (Mocha instance)', () => {
     const test = sinon.spy();
     const _this = {};
+    const _it = (name, b) => body = b;
     let body;
-    itEach('', [0], test, (name, b) => body = b);
+    forEach([0], _it).it('', test);
     body.call(_this);
     assert.equal(test.thisValues[0], _this);
   });
@@ -36,35 +37,46 @@ describe('itEach()', () => {
     it('throws an error when called', () => {
       delete global.it;
       assert.throws(() => {
-        itEach('', [0], () => {});
+        forEach([0]).it('', () => {});
       }, /is not a function/);
     });
   });
 
-  context('without test name', () => {
-    it('defines tests using a default test name', () => {
-      itEach(['foo', 'bar', 'baz'], () => {}, _it);
+  context('with string title', () => {
+    it('defines titles using the specified one and each index', () => {
+      forEach([3, 2, 1, 0], _it).it('title', () => {});
       assert.deepEqual(
         _it.args.map(a => a[0]),
-        [1, 2, 3].map(i => `handles case ${i}`)
+        ['title', 'title', 'title', 'title']
       );
+    });
+
+    it('formats a given string using `sprintf`', () => {
+      const titles = [];
+      forEach(
+        [
+          [0, 'foo', { a: 1.2, b: [3, 2, 1] }],
+          [1, 'bar', { c: 0.1, d: [4, 5, 6] }]
+        ],
+        title => titles.push(title)
+      )
+      .it('handles [%d, %s, %j]', () => {});
+      assert.deepEqual(titles, [
+        'handles [0, foo, {"a":1.2,"b":[3,2,1]}]',
+        'handles [1, bar, {"c":0.1,"d":[4,5,6]}]'
+      ]);
     });
   });
 
-  context('with string test name', () => {
-    it('defines test names using the specified name and each index', () => {
-      itEach('test name', [3, 2, 1, 0], () => {}, _it);
-      assert.deepEqual(
-        _it.args.map(a => a[0]),
-        [1, 2, 3, 4].map(i => `test name (case ${i})`)
+  context('with function title', () => {
+    it('calls the function and defines titles using its return value', () => {
+      forEach([
+        4, 8, 12, 16
+      ], _it)
+      .it(
+        p => `generated ${p / 2}`,
+        () => {}
       );
-    });
-  });
-
-  context('with function test name', () => {
-    it('calls the function and defines tests using its return value', () => {
-      const makeName = p => `generated ${p / 2}`;
-      itEach(makeName, [4, 8, 12, 16], () => {}, _it);
       assert.deepEqual(
         _it.args.map(a => a[0]),
         [2, 4, 6, 8].map(n => `generated ${n}`)
@@ -74,7 +86,7 @@ describe('itEach()', () => {
 
   context('with empty parameters', () => {
     it('defines no test cases', () => {
-      itEach('', [], () => {}, _it);
+      forEach([], _it).it('', () => {});
       assert(! _it.calledOnce);
     });
   });
@@ -82,7 +94,7 @@ describe('itEach()', () => {
   context('with valid parameters', () => {
     it('defines the same number of test cases as the parameters', () => {
       const params = [0, 1, 2, 3, 4, 5];
-      itEach('', params, () => {}, _it);
+      forEach(params, _it).it('', () => {});
       assert.equal(_it.callCount, params.length);
     });
 
@@ -96,7 +108,8 @@ describe('itEach()', () => {
         [null, undefined, undefined, false]
       ];
       const test = sinon.spy();
-      itEach('', params, test, (name, body) => body());
+      const _it = (name, body) => body();
+      forEach(params, _it).it('', test);
       assert.deepEqual(test.args, params);
     });
 
@@ -104,39 +117,28 @@ describe('itEach()', () => {
       it('passes each parameter as a first argument', () => {
         const params = [0, 1, 2, 3];
         const test = sinon.spy();
-        itEach('', params, test, (name, body) => body());
-
-        const expectedArgs = params.map(p => [p]);
-        assert.deepEqual(test.args, expectedArgs);
-      });
-    });
-  });
-
-  context('with invalid arguments', () => {
-    context('like wrong numbers of arguments', () => {
-      it('throws an error', () => {
-        [
-          [],
-          [''],
-          ['', [], () => {}, 1, 2]
-        ].forEach(args => {
-          assert.throws(() => {
-            itEach(...args);
-          }, /itEach:/);
-        });
+        const _it = (name, body) => body();
+        forEach(params, _it).it('', test);
+        assert.deepEqual(
+          test.args,
+          params.map(p => [p])
+        );
       });
     });
   });
 
   context('for asynchronous test', () => {
-    context('when the testBody takes an additional argument', () => {
+    context('when the test function takes an additional argument', () => {
       it('gives a `done` callback used for asynchronous code', () => {
         let args;
         const resolve = () => {};
-        itEach('', [[1, 2]],
-          (one, two, done) => args = [one, two, done],
+        forEach(
+          [[1, 2]],
           (name, body) => body(resolve)
-        );
+        )
+        .it('', (one, two, done) => {
+          args = [one, two, done];
+        });
         assert.deepEqual(args, [1, 2, resolve]);
       });
 
@@ -144,13 +146,14 @@ describe('itEach()', () => {
         const expectedThis = {};
         let actualThis;
         let body;
-        itEach('', [0],
-          /* eslint-disable no-unused-vars */
-          function (n, done) { actualThis = this; },
-          /* eslint-enable */
+        forEach(
+          [0],
           (name, b) => body = b
-        );
-        body.call(expectedThis);
+        ).it('', function(n, done) {
+          actualThis = this;
+          done();
+        });
+        body.call(expectedThis, () => {});
         assert.equal(actualThis, expectedThis);
       });
     });
@@ -160,10 +163,13 @@ describe('itEach()', () => {
         it('gives a `done` callback', () => {
           let args = [];
           const resolve = () => {};
-          itEach('', [[1, 2], [3, 4, 5], [6]],
-           (a, b, c, done) => args.push([a, b, c, done]),
-           (name, body) => body(resolve)
-          );
+          forEach(
+            [ [1, 2], [3, 4, 5], [6] ],
+            (name, body) => body(resolve)
+          )
+          .it('', (a, b, c, done) => {
+            args.push([a, b, c, done]);
+          });
           assert.deepEqual(args, [
             [1, 2, resolve, undefined],
             [3, 4, 5, resolve],
@@ -175,10 +181,13 @@ describe('itEach()', () => {
       context('otherwise', () => {
         it('does not give a `done` callback', () => {
           let args = [];
-          itEach('', [[1, 2], [3, 4, 5, 6], [7]],
-           (a, b, c, d) => args.push([a, b, c, d]),
-           (name, body) => body( () => {} )
-          );
+          forEach(
+            [ [1, 2], [3, 4, 5, 6], [7] ],
+            (name, body) => body(() => {})
+          )
+          .it('', (a, b, c, d) => {
+            args.push([a, b, c, d]);
+          });
           assert.deepEqual(args, [
             [1, 2, undefined, undefined],
             [3, 4, 5, 6],
@@ -189,13 +198,16 @@ describe('itEach()', () => {
     });
 
     context('when the parameters are arrays of non-array values', () => {
-      it('gives a `done` callback correctly', () => {
+      it('gives a `done` callback', () => {
         let args = [];
         const resolve = () => {};
-        itEach('', [0, 1, 2],
-         (n, done) => args.push([n, done]),
-         (name, body) => body(resolve)
-        );
+        forEach(
+          [0, 1, 2],
+          (name, body) => body(resolve)
+        )
+        .it('', (n, done) => {
+          args.push([n, done]);
+        });
         assert.deepEqual(args, [
           [0, resolve],
           [1, resolve],
@@ -205,8 +217,7 @@ describe('itEach()', () => {
     });
   });
 
-  /** @test {itEach.only} */
-  describe('.only()', () => {
+  describe('.it.only()', () => {
     const mochaDescribe = describe;
     let _describe;
 
@@ -221,15 +232,15 @@ describe('itEach()', () => {
     });
 
     it('creates a nameless test suite', () => {
-      itEach.only('', [0], () => {}, _it);
-      const testSuiteName = _describe.only.args[0][0];
-      assert.equal(testSuiteName, '');
+      forEach([0], _it).it.only('', () => {});
+      const suiteTitle = _describe.only.args[0][0];
+      assert.equal(suiteTitle, '');
     });
 
     it('creates a test suite using its `.only()` method', () => {
       const _descOnly = _describe.only;
       const params = [0, 1, 2, 3];
-      itEach.only('', params, () => {}, _it);
+      forEach(params, _it).it.only('', () => {});
 
       assert.deepEqual(
         [_descOnly.callCount, _it.callCount],
@@ -248,20 +259,19 @@ describe('itEach()', () => {
     });
   });
 
-  /** @test {itEach.skip} */
-  describe('.skip()', () => {
+  describe('.it.skip()', () => {
     beforeEach(() => _it.skip = sinon.spy());
     afterEach(() => delete _it.skip);
 
-    it('defines each test case using `it.skip()` method', () => {
-      const params = [0, 1, 2, 3];
-      const makeTestName = p => `test for ${p}`;
-      itEach.skip(makeTestName, params, () => {}, _it);
-
+    it('defines each test case using Mocha\'s `it.skip()` method', () => {
+      const params = [3, 2, 1, 0];
+      const makeTitle = p => `test for ${p}`;
+      forEach(params, _it).it.skip(makeTitle, () => {});
       assert.deepEqual(
         _it.skip.args.map(a => a[0]),
-        params.map(makeTestName)
+        params.map(makeTitle)
       );
     });
   });
 });
+
