@@ -30,6 +30,7 @@
     max-statements:
       - 1
       - 20
+    no-implicit-globals: 2
     no-multi-spaces: 2
     no-new-wrappers: 2
     no-trailing-spaces: 2
@@ -39,6 +40,8 @@
         allowShortCircuit: true
         allowTernary: true
     no-var: 2
+    no-whitespace-before-property: 2
+    one-var-declaration-per-line: 2
     quotes:
       - 2
       - "single"

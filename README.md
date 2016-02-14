@@ -1,10 +1,12 @@
 # Mocha-Each - Parameterized Test for Mocha
 
+[![npm version](https://badge.fury.io/js/mocha-each.svg)][npm-version]
 [![Build Status](https://travis-ci.org/ryym/mocha-each.svg?branch=master)][travis-ci]
 [![Coverage Status](https://coveralls.io/repos/github/ryym/mocha-each/badge.svg?branch=master)][coveralls]
 [![Dependency Status](https://david-dm.org/ryym/mocha-each.svg)][david]
 [![devDependency Status](https://david-dm.org/ryym/mocha-each/dev-status.svg)][david-dev]
 
+[npm-version]: https://badge.fury.io/js/mocha-each
 [travis-ci]: https://travis-ci.org/ryym/mocha-each
 [coveralls]: https://coveralls.io/github/ryym/mocha-each?branch=master
 [david]: https://david-dm.org/ryym/mocha-each
