@@ -39,7 +39,7 @@ function add(a, b) {
   return parseInt(a) + parseInt(b);
 }
 
-describe('add function', () => {
+describe('add()', () => {
   forEach([
     [1, 1, 2],
     [2, -2, 0],
@@ -63,7 +63,9 @@ describe('add function', () => {
 });
 ```
 
-TODO: Image of result output
+Result:
+
+![Output](https://raw.githubusercontent.com/ryym/i/master/mocha-each/output.png)
 
 ### Asynchronous code
 
