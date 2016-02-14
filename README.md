@@ -1,5 +1,3 @@
-# :construction: WIP :construction:
-
 # Mocha-Each - Parameterized Test for Mocha
 
 [![Build Status](https://travis-ci.org/ryym/mocha-each.svg?branch=master)][travis-ci]
