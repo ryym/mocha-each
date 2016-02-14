@@ -31,6 +31,7 @@ test cases for each parameter. All the test cases you defined are executed even 
 one or more cases fail during the test.
 
 ```javascript
+// test.js
 const assert = require('assert');
 const forEach = require('mocha-each');
 
@@ -40,9 +41,9 @@ function add(a, b) {
 
 describe('add function', () => {
   forEach([
-    [[1, 1], 2],
-    [[2, -2], 0],
-    [[140, 48], 188]
+    [1, 1, 2],
+    [2, -2, 0],
+    [140, 48, 188]
   ])
   .it('adds %d and %d then returns %d', (left, right, expected) => {
     assert.equal(add(left, right), expected);
@@ -56,7 +57,7 @@ describe('add function', () => {
     ])
     .it('adds %j and %j then returns NaN', (left, right) => {
       const value = add(left, right);
-      assert.equal(isNaN(value));
+      assert(isNaN(value));
     });
   });
 });
