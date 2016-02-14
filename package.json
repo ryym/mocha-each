@@ -9,7 +9,8 @@
     "dev": "gulp",
     "coverage": "nyc gulp test",
     "precoveralls": "npm run coverage",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "preversion": "npm test && npm run build"
   },
   "keywords": [
     "parameterized",
