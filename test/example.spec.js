@@ -1,7 +1,7 @@
 import assert from 'power-assert';
 import forEach from '../lib';
 
-/* Sample code using 'itEach' */
+/* Sample code using 'mocha-each' */
 describe('Example', () => {
   function add(a, b) {
     return parseInt(a) + parseInt(b);
@@ -69,23 +69,26 @@ describe('Example', () => {
       {}
     ])
     .it('handles %j', value => {
-      assert.equal(asBool(value), true);
+      assert(asBool(value));
     });
   });
 
-  function delayGreet(name, callback) {
+  function delayGreet(name, ms, callback) {
     setTimeout(() => {
       callback(`Hi, ${name}!`);
-    }, 30);
+    }, ms);
   }
 
   /* With asynchronous code */
-  describe('delayGreet()', () => {
+  describe('delayGreet()', function() {
     forEach([
-      'Alis', 'Bob', 'Caroline'
+      ['Alis', 30],
+      ['Bob', 40],
+      ['Caroline', 50]
     ])
-    .it('greets will be delayed', (name, done) => {
-      delayGreet(name, greet => {
+    .it('greets to %s after %d ms', function(name, ms, done) {
+      this.timeout(80);  // Configure timeout.
+      delayGreet(name, ms, greet => {
         assert.equal(greet, `Hi, ${name}!`);
         done();
       });
