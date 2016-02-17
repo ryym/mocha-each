@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+/**
+ * A git hook script to prefix messages of commits
+ * created by 'npm version' command.
+ * To use this hook, copy this file to `.git/hooks/`
+ * in the root directory of this repository.
+ */
+
+var fs = require('fs');
+
+var fileOptions = {
+  encoding: 'UTF-8'
+};
+var messageFile = process.argv[2];
+var message = fs.readFileSync(messageFile, fileOptions);
+
+if (isVersioningCommit(message)) {
+  fs.writeFileSync(messageFile, addPrefix(message), fileOptions);
+}
+
+function addPrefix(message) {
+  return ':anchor: ' + message;
+}
+
+function isVersioningCommit(message) {
+  message = message.replace(/(\r\n|\n|\r)/gm, '');
+  return /^\d+\.\d+\.\d+$/.test(message);
+}
