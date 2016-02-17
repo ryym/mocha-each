@@ -80,7 +80,7 @@ forEach([
   [0, 1],
   [2, 3]
 ])
-.it('do async operation', (arg, expected, done) => {
+.it('does async operation', (arg, expected, done) => {
   fetchData(arg)
     .then(actual => assert.equal(actual, expected))
     .then(done);
