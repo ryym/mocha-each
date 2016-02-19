@@ -106,7 +106,7 @@ gulp.task('lint:test', () => {
 });
 
 gulp.task('lint:gulp', () => {
-  lintFiles('./gulpfile.js', true, {
+  lintFiles('./gulpfile.babel.js', true, {
     rules: { 'no-console': 0 }
   });
 });
