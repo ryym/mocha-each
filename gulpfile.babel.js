@@ -5,8 +5,6 @@ import glob from 'glob';
 import Mocha from 'mocha';
 import eslint from 'eslint';
 
-const Promise = global.Promise || require('es6-promise').Promise;
-
 const GLOB = {
   lib: './lib/**/*.js',
   build: './build/**/*.js',

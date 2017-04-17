@@ -6,6 +6,7 @@
   extends: "eslint:recommended"
   env:
     node: true
+    es6: true
   rules:
     curly: 2
     dot-notation: 2
