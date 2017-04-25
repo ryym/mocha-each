@@ -33,6 +33,16 @@ describe('mocha-each', () => {
     assert.equal(test.thisValues[0], _this);
   });
 
+  it('returns the return value of the test function', () => {
+    const expected = 'test';
+    const test = () => { return expected; };
+    const _it = (name, b) => body = b;
+    let body;
+    forEach([0], _it).it('', test);
+    const returnValue = body.call(null);
+    assert.equal(returnValue, expected);
+  });
+
   context('without Mocha', () => {
     it('throws an error when called', () => {
       delete global.it;
@@ -156,6 +166,7 @@ describe('mocha-each', () => {
         body.call(expectedThis, () => {});
         assert.equal(actualThis, expectedThis);
       });
+
     });
 
     context('when the lengths of parameters are different', () => {
@@ -274,4 +285,3 @@ describe('mocha-each', () => {
     });
   });
 });
-
