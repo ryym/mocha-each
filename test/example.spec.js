@@ -31,6 +31,28 @@ describe('Example', () => {
     });
   });
 
+  function subtract(a, b) {
+    return parseInt(a) - parseInt(b);
+  }
+
+  /* Basic use at describe level */
+  forEach([
+    [1, 1, 0],
+    [2, -2, 4],
+    [140, 48, 92]
+  ])
+  .describe('subtract() with %d and %d', (left, right, expected) => {
+    let actual;
+
+    before(() => {
+      actual = subtract(left, right);
+    });
+
+    it('subtracts correctly and returns ' + expected, () => {
+      assert.equal(actual, expected);
+    });
+  });
+
   function letCry(animal) {
     switch(animal) {
     case 'dog': return 'bowow';

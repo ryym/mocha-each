@@ -67,6 +67,36 @@ Result:
 
 ![Output](https://raw.githubusercontent.com/ryym/i/master/mocha-each/output.png)
 
+### At describe level
+
+Similarly, it works on describe level
+
+```javascript
+// test.js
+const assert = require('assert');
+const forEach = require('mocha-each');
+
+function subtract(a, b) {
+  return parseInt(a) - parseInt(b);
+}
+
+forEach([
+  [1, 1, 0],
+  [2, -2, 4],
+  [140, 48, 92]
+])
+.describe('subtract() with %d and %d', (left, right, expected) => {
+  let actual;
+  before(() => {
+    actual = subtract(left, right);
+  });
+
+  it('subtracts correctly and returns ' + expected, () => {
+    assert.equal(actual, expected);
+  });
+});
+```
+
 ### Asynchronous code
 
 When testing asynchronous code, you need to add a callback as a last argument of
