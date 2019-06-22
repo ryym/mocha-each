@@ -1,11 +1,11 @@
 /* eslint no-console: "off" */
 
-import gulp from 'gulp';
-import babel from 'gulp-babel';
-import del from 'del';
-import glob from 'glob';
-import Mocha from 'mocha';
-import eslint from 'eslint';
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const del = require('del');
+const glob = require('glob');
+const Mocha = require('mocha');
+const eslint = require('eslint');
 
 const GLOB = {
   lib: './lib/**/*.js',
@@ -106,7 +106,7 @@ gulp.task('lint:test', () => {
 });
 
 gulp.task('lint:gulp', () => {
-  lintFiles('./gulpfile.babel.js', true, {
+  lintFiles('./gulpfile.js', true, {
     rules: { 'no-console': 0 },
   });
 });
