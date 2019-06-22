@@ -109,7 +109,7 @@ describe('Example', () => {
       ['Caroline', 50]
     ])
     .it('greets to %s after %d ms', function(name, ms, done) {
-      this.timeout(80);  // Configure timeout.
+      this.timeout(80); // Configure timeout.
       delayGreet(name, ms, greet => {
         assert.equal(greet, `Hi, ${name}!`);
         done();

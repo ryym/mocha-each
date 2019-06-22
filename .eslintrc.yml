@@ -15,9 +15,7 @@
       - "declaration"
       -
         allowArrowFunctions: true
-    indent:
-      - 2
-      - 2
+    indent: 0
     key-spacing:
       - 2
       -
