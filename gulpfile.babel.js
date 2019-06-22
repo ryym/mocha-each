@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 import gulp from 'gulp';
 import babel from 'gulp-babel';
 import del from 'del';
@@ -8,7 +10,7 @@ import eslint from 'eslint';
 const GLOB = {
   lib: './lib/**/*.js',
   build: './build/**/*.js',
-  spec: './test/**/*.spec.js'
+  spec: './test/**/*.spec.js',
 };
 
 gulp.task('clean', () => {
@@ -16,7 +18,8 @@ gulp.task('clean', () => {
 });
 
 gulp.task('build', ['clean'], () => {
-  return gulp.src(GLOB.lib)
+  return gulp
+    .src(GLOB.lib)
     .pipe(babel())
     .pipe(gulp.dest('build/'));
 });
@@ -35,13 +38,13 @@ function runTests(pattern, options) {
   const mocha = new Mocha(options);
   const files = glob.sync(pattern, { realpath: true });
   files.forEach(file => {
-    clearModuleCache(file);  // For watching
+    clearModuleCache(file); // For watching
     mocha.addFile(file);
   });
   return new Promise((resolve, reject) => {
     try {
       mocha.run(resolve);
-    } catch(e) {
+    } catch (e) {
       reject(e);
     }
   });
@@ -64,13 +67,14 @@ gulp.task('test:prepare', () => {
 gulp.task('test', ['test:prepare'], () => {
   return runTests(GLOB.spec)
     .then(exitCode => process.exit(exitCode))
-    .catch(e => { throw e; });
+    .catch(e => {
+      throw e;
+    });
 });
 
 gulp.task('test:watch', ['test:prepare'], () => {
   function test() {
-    runTests(GLOB.spec, { reporter: 'dot' })
-      .catch(e => console.log(e.stack));
+    runTests(GLOB.spec, { reporter: 'dot' }).catch(e => console.log(e.stack));
   }
   const sourceFiles = glob.sync(GLOB.lib, { realpath: true });
   gulp.watch(GLOB.lib, () => {
@@ -103,14 +107,14 @@ gulp.task('lint:test', () => {
 
 gulp.task('lint:gulp', () => {
   lintFiles('./gulpfile.babel.js', true, {
-    rules: { 'no-console': 0 }
+    rules: { 'no-console': 0 },
   });
 });
 
 gulp.task('lint:doc', () => {
   lintFiles('./README.md', true, {
-    plugins: [ 'markdown' ],
-    rules: { 'no-undef': 0 }
+    plugins: ['markdown'],
+    rules: { 'no-undef': 0 },
   });
 });
 
@@ -125,26 +129,13 @@ gulp.task('lint:watch', () => {
   runAndWatch(GLOB.spec, GLOB.spec, lintAndReport);
 });
 
-gulp.task('lint', [
-  'lint:lib',
-  'lint:test'
-]);
+gulp.task('lint', ['lint:lib', 'lint:test']);
 
-gulp.task('lint:all', [
-  'lint',
-  'lint:gulp',
-  'lint:doc'
-]);
+gulp.task('lint:all', ['lint', 'lint:gulp', 'lint:doc']);
 
-gulp.task('check', [
-  'lint:all',
-  'test'
-]);
+gulp.task('check', ['lint:all', 'test']);
 
-gulp.task('default', [
-  'lint:watch',
-  'test:watch'
-]);
+gulp.task('default', ['lint:watch', 'test:watch']);
 
 gulp.task('doc', () => {
   // ESDoc only supports Node.js v6 or later
