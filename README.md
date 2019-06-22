@@ -205,7 +205,7 @@ forEach([
   //...
 ])
 .it('is a slow test', function(p0, p1, p2 /*, done */) {
-  this.timeout(3000);  // Configure timeout.
+  this.timeout(3000); // Configure timeout.
   use(p0, p1, p2);
   //...
 });
