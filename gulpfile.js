@@ -61,7 +61,7 @@ function runAndWatch(watchPattern, initialValue, task) {
 }
 
 gulp.task('test:prepare', () => {
-  require('babel-core/register');
+  require('@babel/register');
 });
 
 gulp.task('test', ['test:prepare'], () => {
