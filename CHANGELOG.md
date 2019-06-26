@@ -1,3 +1,7 @@
+## 2.0.1 (2019-06-27)
+
+- Fix broken build ([#10](https://github.com/ryym/mocha-each/pull/10))
+
 ## 2.0.0 (2019-06-22)
 
 - Update development dependencies ([#7](https://github.com/ryym/mocha-each/pull/7))
