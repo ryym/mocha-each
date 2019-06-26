@@ -60,7 +60,11 @@ function runAndWatch(watchPattern, initialValue, task) {
   return task(initialValue);
 }
 
-gulp.task('test:prepare', () => {
+gulp.task('test:prepare', ['build'], () => {
+  const mochaEach = require('./build');
+  if (typeof mochaEach !== 'function') {
+    throw new Error('Unexpected exports from compiled code');
+  }
   require('@babel/register');
 });
 
