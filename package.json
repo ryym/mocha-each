@@ -52,6 +52,7 @@
   "nyc": {
     "exclude": [
       "gulpfile.js",
+      "build/*",
       "test/**/*"
     ]
   }
